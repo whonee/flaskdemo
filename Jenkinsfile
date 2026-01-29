@@ -111,7 +111,7 @@ pipeline {
                                 --restart always \\
                                 -p ${PROD_PORT}:5000 \\
                                 ${IMAGE_REPO}:${IMAGE_TAG}
-                        "
+                        
                     """
                 }
             }
