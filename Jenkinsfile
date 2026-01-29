@@ -17,7 +17,7 @@ pipeline {
 
         // 手动触发时，env.BRANCH_NAME 通常是 null
         // 需要手动设置或使用默认值
-        BRANCH_NAME = env.BRANCH_NAME ?: 'main'
+        BRANCH_NAME = "${env.BRANCH_NAME ?: 'main'}"
     }
 
     stages {
@@ -78,6 +78,7 @@ pipeline {
                 """
                 // 简单的健康检查
                 sh "sleep 10 && curl -f http://localhost:5000/hello || exit 1"
+                sh "docker rm -f flask-test || true"
             }
         }
 
