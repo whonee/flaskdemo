@@ -93,7 +93,7 @@ pipeline {
                 // 使用 ssh-agent 注入私钥，远程执行 Docker 命令
                 withCredentials([sshUserPrivateKey(credentialsId: 'aliyun-jenkins-agent', keyFileVariable: 'SSH_KEY_FILE')]){
                     sh '''
-                        ssh -o StrictHostKeyChecking=no -i "${SSH_KEY_FILE}" "${ALIYUN_USER}"@$"{ALIYUN_HOST}"
+                        ssh -o StrictHostKeyChecking=no -i "${SSH_KEY_FILE}" "${ALIYUN_USER}"@"${ALIYUN_HOST}"
                     '''
                     sh """
                             # 1. 登录仓库 (如果仓库是私有的)
