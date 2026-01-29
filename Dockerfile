@@ -16,4 +16,5 @@ COPY src/ .
 EXPOSE 5000
 
 # 启动命令 (使用 Gunicorn / waitress 而不是 flask run)
-CMD ["waitress-serve", "--port", "5000", "app:create_app"]
+CMD ["waitress-serve", "--port", "5000", "--call","app:create_app"]
+
