@@ -12,7 +12,7 @@ pipeline {
         PROD_PORT = "8000"
         
         // 阿里云服务器信息
-        ALIYUN_USER = "whonee"
+        ALIYUN_USER = "jenkins"
         ALIYUN_HOST = "aliyun" // 替换为阿里云公网IP
 
         // 手动触发时，env.BRANCH_NAME 通常是 null
@@ -92,8 +92,10 @@ pipeline {
                 echo '正在部署到阿里云...'
                 // 使用 ssh-agent 注入私钥，远程执行 Docker 命令
                 withCredentials([sshUserPrivateKey(credentialsId: 'aliyun-jenkins-agent', keyFileVariable: 'SSH_KEY_FILE')]){
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no -i "${SSH_KEY_FILE}" "${ALIYUN_USER}"@$"{ALIYUN_HOST}"
+                    '''
                     sh """
-                        ssh -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} ${ALIYUN_USER}@${ALIYUN_HOST} "
                             # 1. 登录仓库 (如果仓库是私有的)
                             # docker login registry.cn-hangzhou.aliyuncs.com -u [用户名] -p [密码] 
                             
