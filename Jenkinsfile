@@ -14,6 +14,10 @@ pipeline {
         // 阿里云服务器信息
         ALIYUN_USER = "whonee"
         ALIYUN_HOST = "aliyun" // 替换为阿里云公网IP
+
+        // 手动触发时，env.BRANCH_NAME 通常是 null
+        // 需要手动设置或使用默认值
+        BRANCH_NAME = env.BRANCH_NAME ?: 'main'
     }
 
     stages {
