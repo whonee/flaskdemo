@@ -91,9 +91,9 @@ pipeline {
             steps {
                 echo '正在部署到阿里云...'
                 // 使用 ssh-agent 注入私钥，远程执行 Docker 命令
-                sshagent(credentials: ['aliyun-jenkins-agent']) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'aliyun-ssh-key', keyFileVariable: 'SSH_KEY_FILE')]){
                     sh """
-                        ssh -o StrictHostKeyChecking=no ${ALIYUN_USER}@${ALIYUN_HOST} "
+                        ssh -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} ${ALIYUN_USER}@${ALIYUN_HOST} "
                             # 1. 登录仓库 (如果仓库是私有的)
                             # docker login registry.cn-hangzhou.aliyuncs.com -u [用户名] -p [密码] 
                             
