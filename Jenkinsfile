@@ -73,7 +73,7 @@ pipeline {
                     docker run -d --name flask-test -p 5000:5000 ${IMAGE_REPO}:latest
                 """
                 // 简单的健康检查
-                sh "sleep 10 && curl -f http://localhost:5000 || exit 1"
+                sh "sleep 10 && curl -f http://localhost:5000/hello || exit 1"
             }
         }
 
