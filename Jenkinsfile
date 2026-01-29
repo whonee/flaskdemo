@@ -21,8 +21,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo '正在拉取代码...'
-                git branch: 'main', url: 'git@github.com:whonee/test-jenkins.git',
-                credentialsId: 'whonee'
+                git branch: 'main', url: 'git@github.com:whonee/flaskdemo.git',
+                credentialsId: 'github-key'
             }
         }
 
@@ -46,7 +46,9 @@ pipeline {
                     echo '构建 Docker 镜像...'
                     // 登录镜像仓库
                     withCredentials([usernamePassword(credentialsId: 'ali-image-repo', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_USER')]) {
-                        sh "echo $DOCKER_PWD | docker login --username=$DOCKER_USER crpi-kkwnyjxyawe2f42w.cn-hangzhou.personal.cr.aliyuncs.com --password-stdin"
+                        sh '''
+                        echo "$DOCKER_PWD" | docker login --username="$DOCKER_USER" crpi-kkwnyjxyawe2f42w.cn-hangzhou.personal.cr.aliyuncs.com --password-stdin
+                        '''
                     }
                     
                     // 构建镜像
@@ -71,7 +73,7 @@ pipeline {
                     docker run -d --name flask-test -p 5000:5000 ${IMAGE_REPO}:latest
                 """
                 // 简单的健康检查
-                sh "sleep 5 && curl -f http://localhost:5000 || exit 1"
+                sh "sleep 10 && curl -f http://localhost:5000 || exit 1"
             }
         }
 
@@ -121,7 +123,7 @@ pipeline {
                 <p><b>时长：</b>${currentBuild.durationString}</p>
                 <p><b>详情：</b><a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
                 """,
-                to: 'whonee1@163.com'
+                to: 'whonee1@163.com',
                 mimeType: 'text/html'
             )
         }
