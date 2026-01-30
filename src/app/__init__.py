@@ -3,7 +3,6 @@ from logging.config import dictConfig
 from pathlib import Path
 
 import markdown
-
 from flask import Flask, g, render_template, session
 from werkzeug.exceptions import HTTPException
 
@@ -11,11 +10,23 @@ from . import auth, blog, db
 
 
 def create_app(test_config=None) -> Flask:
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY=os.getenv("SECRET_KEY"),
         DATABASE=Path(app.instance_path) / "app.sqlite",
     )
+    if test_config is None:
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile("config.py", silent=True)
+    else:
+        # load the test config if passed in
+        app.config.from_mapping(test_config)
+
+    Path(app.instance_path).mkdir(parents=True, exist_ok=True)
+
+    @app.route("/health")
+    def health() -> str:
+        return "ok"
 
     @app.template_filter("markdown")
     def markdown_filter(text):

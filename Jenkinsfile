@@ -74,7 +74,7 @@ pipeline {
             steps {
                 sh """
                     docker rm -f flask-test || true
-                    docker run -d --name flask-test -p 5000:5000 ${IMAGE_REPO}:latest
+                    docker run -d --name flask-test -p 5000:5000 -v ~/flaskdemo/instance/:/app/instance/ ${IMAGE_REPO}:latest
                 """
                 // 简单的健康检查
                 sh "sleep 10 && curl -f http://localhost:5000/hello || exit 1"
@@ -108,6 +108,7 @@ pipeline {
                                 --name ${CONTAINER_NAME} \\
                                 --restart always \\
                                 -p ${PROD_PORT}:5000 \\
+                                -v ~/flaskdemo/instance/:/app/instance/ \\
                                 ${IMAGE_REPO}:${IMAGE_TAG}
                         '
                     """

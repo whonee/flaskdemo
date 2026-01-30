@@ -15,7 +15,7 @@
             </div>
             <div class="form-group">
                 <label for="body" class="form-label">Content (Markdown supported)</label>
-                <textarea name="body" id="body" rows="10" class="form-textarea" required>{{ request.form['body'] or post['body'] }}</textarea>
+                <textarea name="body" id="body" rows="10" class="form-textarea">{{ request.form['body'] or post['body'] }}</textarea>
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -30,25 +30,29 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var easyMDE = new EasyMDE({
-                element: document.getElementById('body'),
-                spellChecker: false,
-                autosave: {
-                    enabled: true,
-                    uniqueId: 'blog_update_{{ post["id"] }}',
-                    delay: 1000,
-                },
-                status: false,
-                toolbar: [
-                    'bold', 'italic', 'heading', '|',
-                    'quote', 'unordered-list', 'ordered-list', '|',
-                    'link', 'image', '|',
-                    'preview', 'side-by-side', 'fullscreen', '|',
-                    'guide'
-                ],
-            });
-        });
-    </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var easyMDE = new EasyMDE({
+                        element: document.getElementById('body'),
+                        spellChecker: false,
+                        autosave: {
+                            enabled: true,
+                            uniqueId: 'blog_update_{{ post["id"] }}',
+                            delay: 1000,
+                        },
+                        status: false,
+                        toolbar: [
+                            'bold', 'italic', 'heading', '|',
+                            'quote', 'unordered-list', 'ordered-list', '|',
+                            'link', 'image', '|',
+                            'preview', 'side-by-side', 'fullscreen', '|',
+                            'guide'
+                        ],
+                    });
+
+                    document.getElementById('postForm').addEventListener('submit', function() {
+                        easyMDE.toTextArea();
+                    });
+                });
+            </script>
 {% endblock %}

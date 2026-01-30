@@ -365,6 +365,16 @@ body {
     margin-top: auto;
 }
 
+.footer a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
