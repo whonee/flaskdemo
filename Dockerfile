@@ -3,6 +3,8 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+RUN mkdir -p /logs && chmod -R 777 /logs
+
 # 复制依赖文件并安装 (利用缓存层)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
