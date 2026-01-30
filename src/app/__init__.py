@@ -59,6 +59,8 @@ def handle_http_exception(e):
     return render_template("error/500.html"), 500
 
 
+Path("logs").mkdir(parents=True, exist_ok=True)
+
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -79,14 +81,14 @@ LOGGING_CONFIG = {
         },
         "applog": {
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "logs/app.log" if sys.platform == "win32" else f"{Path(__file__)}/logs/app.log",
+            "filename": "logs/app.log",
             "when": "midnight",
             "backupCount": 7,
             "formatter": "custom",
         },
         "werkzeuglog": {
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "logs/werkzeug.log" if sys.platform == "win32" else f"{Path(__file__)}/logs/app.log",
+            "filename": "logs/werkzeug.log",
             "when": "midnight",
             "backupCount": 7,
             "formatter": "custom",
