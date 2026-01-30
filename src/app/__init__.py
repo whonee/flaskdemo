@@ -1,4 +1,4 @@
-import os
+import sys
 from logging.config import dictConfig
 from pathlib import Path
 
@@ -79,14 +79,14 @@ LOGGING_CONFIG = {
         },
         "applog": {
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "logs/app.log",
+            "filename": "logs/app.log" if sys.platform == "win32" else f"{Path(__file__)}/logs/app.log",
             "when": "midnight",
             "backupCount": 7,
             "formatter": "custom",
         },
         "werkzeuglog": {
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "logs/werkzeug.log",
+            "filename": "logs/werkzeug.log" if sys.platform == "win32" else f"{Path(__file__)}/logs/app.log",
             "when": "midnight",
             "backupCount": 7,
             "formatter": "custom",
