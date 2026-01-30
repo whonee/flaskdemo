@@ -38,7 +38,7 @@ pipeline {
                 sh '''
                     uv sync
                     # 运行测试 (假设你有测试文件)
-                    uv run pytest
+                    uv run python -u "scripts/run_test_coverage.py"
                 '''
             }
         }
