@@ -6,10 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "flask>=3.1.2",
+    "python-dotenv>=1.2.1",
 ]
 
 [dependency-groups]
 dev = [
+    "coverage>=7.13.2",
     "pytest>=9.0.2",
     "waitress>=3.0.2",
 ]
@@ -43,3 +45,7 @@ markers = [
     "end2end",
 ]
 
+
+[tool.coverage.run]
+branch = true
+source = ["app"]
