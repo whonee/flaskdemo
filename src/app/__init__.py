@@ -12,7 +12,8 @@ from . import auth, blog, db
 def create_app(test_config=None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY=os.getenv("SECRET_KEY"),
+        # SECRET_KEY=os.getenv("SECRET_KEY"),
+        SECRET_KEY="to be changed",
         DATABASE=Path(app.instance_path) / "app.sqlite",
     )
     if test_config is None:
