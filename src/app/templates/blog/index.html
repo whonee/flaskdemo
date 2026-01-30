@@ -13,19 +13,22 @@
     <div class="posts-container">
         {% for post in posts %}
             <article class="post-card">
-                <header class="post-header">
-                    <h2 class="post-title">{{ post['title'] }}</h2>
-                    <div class="post-meta">
-                        <span class="author">by {{ post['username'] }}</span>
-                        <span class="date">{{ post['created'].strftime('%Y-%m-%d') }}</span>
+                <a href="{{ url_for('blog.detail', id=post['id']) }}" class="post-link">
+                    <header class="post-header">
+                        <h2 class="post-title">{{ post['title'] }}</h2>
+                        <div class="post-meta">
+                            <span class="author">by {{ post['username'] }}</span>
+                            <span class="date">{{ post['created'].strftime('%Y-%m-%d') }}</span>
+                        </div>
+                    </header>
+                    <div class="post-body">
+                        <p class="post-body-text">{{ post['body'] | truncate(150, true, '...') }}</p>
                     </div>
-                </header>
-                <div class="post-body">
-                    <p>{{ post['body'] }}</p>
-                </div>
+                </a>
                 <footer class="post-footer">
+                    <span class="read-more">Read more →</span>
                     {% if g.user and g.user['id'] == post['author_id'] %}
-                        <a href="{{ url_for('blog.update', id=post['id']) }}" class="btn btn-secondary">Edit</a>
+                        <a href="{{ url_for('blog.update', id=post['id']) }}" class="btn btn-secondary" onclick="event.stopPropagation();">Edit</a>
                     {% endif %}
                 </footer>
             </article>

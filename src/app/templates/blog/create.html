@@ -8,14 +8,14 @@
 
 {% block content %}
     <div class="form-container">
-        <form method="post" class="post-form">
+        <form method="post" class="post-form" id="postForm">
             <div class="form-group">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" name="title" id="title" value="{{ request.form['title'] }}" class="form-input" required>
             </div>
             <div class="form-group">
-                <label for="body" class="form-label">Content</label>
-                <textarea name="body" id="body" rows="8" class="form-textarea" required>{{ request.form['body'] }}</textarea>
+                <label for="body" class="form-label">Content (Markdown supported)</label>
+                <textarea name="body" id="body" rows="10" class="form-textarea" required>{{ request.form['body'] }}</textarea>
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -23,4 +23,28 @@
             </div>
         </form>
     </div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var easyMDE = new EasyMDE({
+                element: document.getElementById('body'),
+                spellChecker: false,
+                autosave: {
+                    enabled: true,
+                    uniqueId: 'blog_create',
+                    delay: 1000,
+                },
+                status: false,
+                toolbar: [
+                    'bold', 'italic', 'heading', '|',
+                    'quote', 'unordered-list', 'ordered-list', '|',
+                    'link', 'image', '|',
+                    'preview', 'side-by-side', 'fullscreen', '|',
+                    'guide'
+                ],
+            });
+        });
+    </script>
 {% endblock %}

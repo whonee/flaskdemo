@@ -11,7 +11,6 @@ from flask import (
     request,
     url_for,
 )
-from werkzeug.exceptions import abort
 
 from app.auth import login_required
 from app.db import get_db
@@ -22,7 +21,7 @@ bp = Blueprint("blog", __name__)
 
 @bp.route("/")
 def index():
-    logger.info(f"{current_app.name}")
+    logger.info(f"{g.user}")
     db = get_db()
     posts = db.execute(
         "SELECT p.id, title, body, created, author_id, username"
@@ -47,7 +46,10 @@ def create():
             flash(error)
         else:
             db = get_db()
-            db.execute("INSERT INTO post (title, body, author_id) VALUES (?, ?, ?)", (title, body, g.user["id"]))
+            db.execute(
+                "INSERT INTO post (title, body, author_id) VALUES (?, ?, ?)",
+                (title, body, g.user["id"]),
+            )
             db.commit()
             return redirect(url_for("blog.index"))
 
@@ -92,7 +94,9 @@ def update(id):
             flash(error)
         else:
             db = get_db()
-            db.execute("UPDATE post SET title = ?, body = ? WHERE id = ?", (title, body, id))
+            db.execute(
+                "UPDATE post SET title = ?, body = ? WHERE id = ?", (title, body, id)
+            )
             db.commit()
             return redirect(url_for("blog.index"))
 
@@ -107,3 +111,9 @@ def delete(id):
     db.execute("DELETE FROM post WHERE id = ?", (id,))
     db.commit()
     return redirect(url_for("blog.index"))
+
+
+@bp.route("/<int:id>")
+def detail(id):
+    post = get_post(id, check_author=False)
+    return render_template("blog/detail.html", post=post)
