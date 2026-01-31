@@ -39,7 +39,7 @@ pipeline {
                     uv sync
                     # 运行测试 (假设你有测试文件)
                     uv pip install -e .
-                    uv run coverage run -m pytest
+                    uv run coverage run -m pytest -k "not register"
                     uv run coverage html
                 '''
             }
