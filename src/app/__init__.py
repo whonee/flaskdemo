@@ -1,9 +1,8 @@
-import sys
 from logging.config import dictConfig
 from pathlib import Path
 
 import markdown
-from flask import Flask, g, render_template, session
+from flask import Flask, render_template
 from werkzeug.exceptions import HTTPException
 
 from . import auth, blog, db
@@ -30,7 +29,7 @@ def create_app(test_config=None) -> Flask:
         return "ok"
 
     @app.template_filter("markdown")
-    def markdown_filter(text):
+    def markdown_filter(text) -> str:
         return markdown.markdown(text, extensions=["fenced_code", "tables"])
 
     db.init_app(app)
