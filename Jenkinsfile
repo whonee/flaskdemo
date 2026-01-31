@@ -7,7 +7,7 @@ pipeline {
     environment {
         // 项目配置
         IMAGE_REPO = "crpi-kkwnyjxyawe2f42w.cn-hangzhou.personal.cr.aliyuncs.com/ygg12138ali/whonee.flask" // 替换为你的镜像仓库地址
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        IMAGE_TAG = "0.0.${env.BUILD_NUMBER}"
         CONTAINER_NAME = "flask-prod"
         PROD_PORT = "8000"
         
